@@ -3,6 +3,7 @@ import time
 import asyncio
 import logging
 import json
+import os
 from threading import Thread
 from nats_publisher import nats_publisher
 from enviro import environ
@@ -25,7 +26,7 @@ async def run(loop):
     data = en.display_and_return_readings()
 
     await c.connect()
-    #
+
     while True:
         data = en.display_and_return_readings()
         parsed_data = bp.parse_enviro_list_to_bloomsprout_object(data)
