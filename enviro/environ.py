@@ -3,9 +3,11 @@ import time
 import colorsys
 import sys
 import ST7735
+
 try:
     # Transitional fix for breaking change in LTR559
     from ltr559 import LTR559
+
     ltr559 = LTR559()
 except ImportError:
     import ltr559
@@ -22,8 +24,8 @@ from fonts.ttf import RobotoMedium as UserFont
 from .constants import Constants as con
 import logging
 
-class Enviro:
 
+class Enviro:
     def __init__(self):
         # BME280 temperature/pressure/humidity sensor
         self.bme280 = BME280()
@@ -34,12 +36,7 @@ class Enviro:
 
         # Create ST7735 LCD display class
         self.st7735 = ST7735.ST7735(
-            port=0,
-            cs=1,
-            dc=9,
-            backlight=12,
-            rotation=270,
-            spi_speed_hz=10000000
+            port=0, cs=1, dc=9, backlight=12, rotation=270, spi_speed_hz=10000000
         )
 
         # Initialize display
@@ -49,7 +46,7 @@ class Enviro:
         self.HEIGHT = self.st7735.height
 
         # Set up canvas and font
-        self.img = Image.new('RGB', (self.WIDTH, self.HEIGHT), color=(0, 0, 0))
+        self.img = Image.new("RGB", (self.WIDTH, self.HEIGHT), color=(0, 0, 0))
         self.draw = ImageDraw.Draw(self.img)
         self.font = ImageFont.truetype(UserFont, con.font_size_large)
         self.smallfont = ImageFont.truetype(UserFont, con.font_size_small)
@@ -78,7 +75,11 @@ class Enviro:
             # Draw a 1-pixel wide rectangle of colour
             self.draw.rectangle((i, con.top_pos, i + 1, self.HEIGHT), (r, g, b))
             # Draw a line graph in black
-            line_y = con.HEIGHT - (con.top_pos + (colours[i] * (con.HEIGHT - con.top_pos))) + con.top_pos
+            line_y = (
+                con.HEIGHT
+                - (con.top_pos + (colours[i] * (con.HEIGHT - con.top_pos)))
+                + con.top_pos
+            )
             self.draw.rectangle((i, line_y, i + 1, line_y + 1), (0, 0, 0))
         # Write the text at the top in black
         draw.text((0, 0), message, font=self.font, fill=(0, 0, 0))
@@ -95,10 +96,12 @@ class Enviro:
 
     # Displays all the text on the 0.96" LCD
     def display_everything(self):
-        self.parsed_data = [] # Set the array to empty so that it can be filled up again
+        self.parsed_data = (
+            []
+        )  # Set the array to empty so that it can be filled up again
         self.draw.rectangle((0, 0, self.WIDTH, self.HEIGHT), (0, 0, 0))
         column_count = 2
-        row_count = (len(con.variables) / column_count)
+        row_count = len(con.variables) / column_count
         for i in range(len(con.variables)):
             variable = con.variables[i]
             data_value = self.values[variable][-1]
@@ -106,7 +109,8 @@ class Enviro:
             x = con.x_offset + ((self.WIDTH // column_count) * (i // row_count))
             y = con.y_offset + ((self.HEIGHT / row_count) * (i % row_count))
             message = "{}: {:.1f} {}".format(variable[:4], data_value, unit)
-            self.parsed_data.append({ unit: data_value })
+            pd = {"unit": unit, "name": variable, "value": data_value}
+            self.parsed_data.append(pd)
             lim = con.limits[i]
             rgb = con.palette[0]
             for j in range(len(lim)):
@@ -117,10 +121,11 @@ class Enviro:
 
     # Get the temperature of the CPU for compensation
     def get_cpu_temperature(self):
-        process = Popen(['vcgencmd', 'measure_temp'], stdout=PIPE, universal_newlines=True)
+        process = Popen(
+            ["vcgencmd", "measure_temp"], stdout=PIPE, universal_newlines=True
+        )
         output, _error = process.communicate()
-        return float(output[output.index('=') + 1:output.rindex("'")])
-
+        return float(output[output.index("=") + 1 : output.rindex("'")])
 
     def display_and_return_readings(self):
         # Tuning factor for compensation. Decrease this number to adjust the
@@ -130,7 +135,7 @@ class Enviro:
         cpu_temps = [self.get_cpu_temperature()] * 5
 
         delay = 0.5  # Debounce the proximity tap
-        mode = 10    # The starting mode
+        mode = 10  # The starting mode
         last_page = 0
 
         for v in con.variables:
@@ -141,7 +146,7 @@ class Enviro:
         # If the proximity crosses the threshold, toggle the mode
         if proximity > 1500 and time.time() - last_page > delay:
             mode += 1
-            mode %= (len(con.variables) + 1)
+            mode %= len(con.variables) + 1
             last_page = time.time()
 
         # One mode for each variable

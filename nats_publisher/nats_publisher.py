@@ -7,12 +7,13 @@ from nats.aio.client import Client as NATS
 from nats.aio.errors import ErrConnectionClosed, ErrTimeout
 
 logging.basicConfig(
-    format='%(asctime)s.%(msecs)03d %(levelname)-8s %(message)s',
+    format="%(asctime)s.%(msecs)03d %(levelname)-8s %(message)s",
     level=logging.INFO,
-    datefmt='%Y-%m-%d %H:%M:%S')
+    datefmt="%Y-%m-%d %H:%M:%S",
+)
+
 
 class NatsPublisher:
-
     def __init__(self, loop):
         logging.info("Init the nats logger")
 
@@ -24,7 +25,7 @@ class NatsPublisher:
             "error_cb": self.error_cb,
             "closed_cb": self.closed_cb,
             "reconnected_cb": self.reconnected_cb,
-            "servers": ["nats://dev-k3s-1:4222"]
+            "servers": ["nats://dev-k3s-1:4222"],
         }
 
     async def error_cb(self, e):
@@ -35,7 +36,6 @@ class NatsPublisher:
 
     async def reconnected_cb(self):
         print(f"Connected to NATS at {nc.connected_url.netloc}...")
-
 
     async def publish(self, subject, data):
         logging.info(f"Publishing on {subject}")
