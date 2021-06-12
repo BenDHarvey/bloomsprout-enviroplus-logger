@@ -16,7 +16,7 @@ logging.basicConfig(
 
 
 async def run(loop):
-    logging.info("Running program...")
+    logging.info("starting environplus logger")
 
     c = nats_publisher.NatsPublisher(loop)
     en = environ.Enviro()

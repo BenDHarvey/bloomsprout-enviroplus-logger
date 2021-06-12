@@ -15,7 +15,7 @@ logging.basicConfig(
 
 class NatsPublisher:
     def __init__(self, loop):
-        logging.info("Init the nats logger")
+        logging.info("init nats connection")
 
         self.nc = NATS()
         self.loop = loop
@@ -29,18 +29,19 @@ class NatsPublisher:
         }
 
     async def error_cb(self, e):
-        print("Error:", e)
+       logging.error(f"error when publishing data. Error: {e}")
 
     async def closed_cb(self):
-        print("Connection to NATS is closed.")
+       logging.error(f"nats connection has been closed")
 
     async def reconnected_cb(self):
-        print(f"Connected to NATS at {nc.connected_url.netloc}...")
+       logging.info(f"Connected to NATS at {nc.connected_url.netloc}...")
 
     async def publish(self, subject, data):
-        logging.info(f"Publishing on {subject}")
+        logging.info(f"publishing data on {subject}")
         await self.nc.publish(subject, data.encode())
 
     async def connect(self):
         logging.info(f"connecting to nats server")
         await self.nc.connect(**self.options)
+        logging.info(f"connected")

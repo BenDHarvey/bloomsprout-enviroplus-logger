@@ -24,9 +24,17 @@ from fonts.ttf import RobotoMedium as UserFont
 from .constants import Constants as con
 import logging
 
+logging.basicConfig(
+    format="%(asctime)s.%(msecs)03d %(levelname)-8s %(message)s",
+    level=logging.INFO,
+    datefmt="%Y-%m-%d %H:%M:%S",
+)
+
 
 class Enviro:
     def __init__(self):
+        logging.info("init enviroplus")
+
         # BME280 temperature/pressure/humidity sensor
         self.bme280 = BME280()
 
