@@ -22,4 +22,4 @@ class BloomsproutParser:
 
         meta = {"Instrument": "enviro+", "Id": "sense-02"}
 
-        return {"Timestamp": x_split[0], "Measurments": measurments, "Meta": meta}
+        return {"Timestamp": int(x_split[0]), "Measurments": measurments, "Meta": meta}
