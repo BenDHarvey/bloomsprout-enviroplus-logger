@@ -166,7 +166,8 @@ class Enviro:
             cpu_temps = cpu_temps[1:] + [cpu_temp]
             avg_cpu_temp = sum(cpu_temps) / float(len(cpu_temps))
             raw_temp = self.bme280.get_temperature()
-            data = raw_temp - ((avg_cpu_temp - raw_temp) / factor)
+            #data = raw_temp - ((avg_cpu_temp - raw_temp) / factor)
+            data = raw_temp # Just report the raw temp. Planning to move the sensor away from the board so this problem should go away
             display_text(con.variables[mode], data, unit)
 
         if mode == 1:
