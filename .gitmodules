@@ -1,0 +1,3 @@
+[submodule "bloomsprout-proto"]
+	path = bloomsprout-proto
+	url = https://github.com/BenDHarvey/bloomsprout-proto.git

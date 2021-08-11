@@ -25,3 +25,7 @@ run-dev: ## Run locally using variables in the config-local file
 	cat ./config-dev.env
 	source ./config-dev.env
 	NATS_SERVER=$(NATS_SERVER) NATS_SUBJECT=$(NATS_SUBJECT) python3 main.py
+
+git-submodule-update: ## Update all the submodules for this project
+	git submodule update --init --recursive
+	git submodule update --recursive --remote
