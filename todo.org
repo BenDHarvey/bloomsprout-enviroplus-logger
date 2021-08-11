@@ -1,0 +1,6 @@
+* Inbox
+** TODO Fix this
+
+[[file:~/Workspace/github.com/BenDHarvey/bloomsprout-enviroplus-logger/bloomsprout/parse.py::reading.deviceName = "sense-02" # TODO: Fix me]]
+
+Should get this value from environment variable instead of hard coded

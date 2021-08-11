@@ -15,7 +15,6 @@ logging.basicConfig(
     datefmt="%Y-%m-%d %H:%M:%S",
 )
 
-
 async def run(loop):
     logging.info("starting environplus logger")
 
@@ -29,7 +28,9 @@ async def run(loop):
 
     while True:
         data = en.display_and_return_readings()
-        parsed_data = bp.parse_enviro_list_to_bloomsprout_object(data)
+        proto_data = bp.parse_enviro_list_to_bloomsprout_object(data)
+
+        # make into proto btyes and then pass to nats for transmission
         json_data = json.dumps(parsed_data)
         await asyncio.sleep(1)
 
