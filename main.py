@@ -32,7 +32,7 @@ async def run(loop):
 
         await asyncio.sleep(1)
 
-        await c.publish("metrics_test", proto_data.SerializeToString())
+        await c.publish(proto_data.SerializeToString())
 
 
 if __name__ == "__main__":

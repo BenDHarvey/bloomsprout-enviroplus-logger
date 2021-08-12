@@ -43,7 +43,7 @@ class NatsPublisher:
     async def reconnected_cb(self):
        logging.info(f"Connected to NATS at {nc.connected_url.netloc}...")
 
-    async def publish(self, subject, data):
+    async def publish(self, data):
         logging.info(f"Publishing on {self.nats_subject}")
         await self.nc.publish(self.nats_subject, data.encode())
 
