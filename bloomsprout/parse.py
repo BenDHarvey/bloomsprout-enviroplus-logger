@@ -37,8 +37,8 @@ class BloomsproutParser:
             return_val = 5
 
         if return_val is 0:
-            logging.info("[Warning] parse_name_to_proto_enum - return value is set to 0")
-            logging.info(f"[Warning] parse_name_to_proto_enum - received value {unit_string}")
+            logging.info("[Warning] parse_unit_to_proto_enum - return value is set to 0")
+            logging.info(f"[Warning] parse_unit_to_proto_enum - received value {unit_string}")
 
         return return_val
 
