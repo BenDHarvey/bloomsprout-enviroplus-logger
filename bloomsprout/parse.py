@@ -33,7 +33,7 @@ class BloomsproutParser:
             return_val = 2
         elif unit_string is "kO":
             return_val = 4
-        elif unit_string is "ug/m3":
+        elif unit_string is "ug_m3":
             return_val = 5
 
         if return_val is 0:

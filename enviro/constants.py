@@ -25,7 +25,7 @@ class Constants:
         "pm10",
     ]
 
-    units = ["C", "hPa", "%", "Lux", "kO", "kO", "kO", "ug/m3", "ug/m3", "ug/m3"]
+    units = ["C", "hPa", "%", "Lux", "kO", "kO", "kO", "ug_m3", "ug_m3", "ug_m3"]
 
     # Define your own warning limits
     # The limits definition follows the order of the variables array
