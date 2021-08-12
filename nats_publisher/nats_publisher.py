@@ -45,7 +45,7 @@ class NatsPublisher:
 
     async def publish(self, data):
         logging.info(f"Publishing on {self.nats_subject}")
-        await self.nc.publish(self.nats_subject, data.encode())
+        await self.nc.publish(self.nats_subject, data)
 
     async def connect(self):
         logging.info(f"connecting to nats server")
