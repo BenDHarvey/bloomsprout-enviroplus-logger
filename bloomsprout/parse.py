@@ -81,14 +81,12 @@ class BloomsproutParser:
         reading.interval = "1s"
         reading.readingTakenAt = int(time.time())
 
-
-        measurments = []
-        for m in enviro_readings:
+        for r in enviro_readings:
             m = reading.measurements.add()
-            m.value = m['value']
-            m.name = parse_name_to_proto_enum(m["name"])
-            m.unit = parse_unit_to_proto_enum(m["unit"])
+            m.value = r['value']
+            m.name = parse_name_to_proto_enum(r["name"])
+            m.unit = parse_unit_to_proto_enum(r["unit"])
 
-            measurments.append(d)
+        print(reading)
 
         return reading
