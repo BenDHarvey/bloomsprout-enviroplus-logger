@@ -84,8 +84,8 @@ class BloomsproutParser:
         for r in enviro_readings:
             m = reading.measurements.add()
             m.value = r['value']
-            m.name = parse_name_to_proto_enum(r["name"])
-            m.unit = parse_unit_to_proto_enum(r["unit"])
+            m.name = self.parse_name_to_proto_enum(r["name"])
+            m.unit = self.parse_unit_to_proto_enum(r["unit"])
 
         print(reading)
 
