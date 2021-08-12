@@ -15,7 +15,6 @@ logging.basicConfig(
     datefmt="%Y-%m-%d %H:%M:%S",
 )
 
-
 async def run(loop):
     logging.info("starting environplus logger")
 
@@ -29,11 +28,11 @@ async def run(loop):
 
     while True:
         data = en.display_and_return_readings()
-        parsed_data = bp.parse_enviro_list_to_bloomsprout_object(data)
-        json_data = json.dumps(parsed_data)
+        proto_data = bp.parse_enviro_list_to_bloomsprout_object(data)
+
         await asyncio.sleep(1)
 
-        await c.publish("metrics_test", json_data)
+        await c.publish(proto_data.SerializeToString())
 
 
 if __name__ == "__main__":
