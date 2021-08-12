@@ -5,17 +5,20 @@ import logging
 from datetime import timezone
 import datetime
 
-script_path = os.path.realpath(os.path.dirname(__name__))
-os.chdir(script_path)
-sys.path.append("../bloomsprout-proto/compiled/python")
-
-import bloomsprout_proto_pb2
-
 logging.basicConfig(
     format="%(asctime)s.%(msecs)03d %(levelname)-8s %(message)s",
     level=logging.INFO,
     datefmt="%Y-%m-%d %H:%M:%S",
 )
+
+script_path = os.path.realpath(os.path.dirname(__name__))
+os.chdir(script_path)
+sys.path.append("../bloomsprout-proto/compiled/python")
+
+logging.info("THIS IS THE PATH: ", sys.path)
+
+import bloomsprout_proto_pb2
+
 
 class BloomsproutParser:
     def parse_unit_to_proto_enum(self, unit_string):
