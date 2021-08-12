@@ -30,11 +30,9 @@ async def run(loop):
         data = en.display_and_return_readings()
         proto_data = bp.parse_enviro_list_to_bloomsprout_object(data)
 
-        # make into proto btyes and then pass to nats for transmission
-        json_data = json.dumps(parsed_data)
         await asyncio.sleep(1)
 
-        await c.publish("metrics_test", json_data)
+        await c.publish("metrics_test", proto_data.SerializeToString())
 
 
 if __name__ == "__main__":

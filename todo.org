@@ -1,4 +1,9 @@
 * Inbox
+** DONE Fix this
+
+[[file:~/Workspace/github.com/BenDHarvey/bloomsprout-enviroplus-logger/bloomsprout/parse.py::print("\[Warning\] parse_name_to_proto_enum - return value is set to 0")]]
+
+Change to have a proper logging call and not just a print statement
 ** TODO Fix this
 
 [[file:~/Workspace/github.com/BenDHarvey/bloomsprout-enviroplus-logger/bloomsprout/parse.py::reading.deviceName = "sense-02" # TODO: Fix me]]
