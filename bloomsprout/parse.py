@@ -5,13 +5,7 @@ import logging
 from datetime import timezone
 import datetime
 
-script_path = os.path.realpath(os.path.dirname(__name__))
-os.chdir(script_path)
-sys.path.append("bloomsprout-proto/compiled/python")
-
-print("THIS IS THE PATH: ", sys.path)
-
-import bloomsprout_proto_pb2
+from bloomsprout_proto import bloomsprout_proto_pb2
 
 logging.basicConfig(
     format="%(asctime)s.%(msecs)03d %(levelname)-8s %(message)s",
