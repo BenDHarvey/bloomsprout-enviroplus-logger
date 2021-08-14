@@ -9,6 +9,8 @@ script_path = os.path.realpath(os.path.dirname(__name__))
 os.chdir(script_path)
 sys.path.append("bloomsprout-proto/compiled/python")
 
+print("THIS IS THE PATH: ", sys.path)
+
 import bloomsprout_proto_pb2
 
 logging.basicConfig(
