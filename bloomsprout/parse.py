@@ -4,7 +4,7 @@ import os, sys
 import logging
 from datetime import timezone
 import datetime
-from compiled.pytho import bloomsprout_proto_pb2
+from compiled.python import bloomsprout_proto_pb2
 
 logging.basicConfig(
     format="%(asctime)s.%(msecs)03d %(levelname)-8s %(message)s",
