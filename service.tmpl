@@ -1,0 +1,13 @@
+[Unit]
+Description=enviroplus_services
+
+[Service]
+User=root
+Group=root
+Type=simple
+Restart=always
+RestartSec=10
+ExecStart=/home/pi/workspace/github.com/BenDHarvey/bloomsprout-enviroplus-logger/logger.py
+
+[Install]
+WantedBy=multi-user.target

@@ -1,7 +1,4 @@
 # import config.
-cnf-dev ?= config-dev.env
-include $(cnf-dev)
-
 GIT_SHORT_SHA=$(shell git rev-parse --short HEAD)
 GIT_BRANCH=$(shell git rev-parse --symbolic-full-name --abbrev-ref HEAD)
 VERSION=$(GIT_BRANCH)_$(GIT_SHORT_SHA)
@@ -18,14 +15,10 @@ help: ## This help.
 
 .DEFAULT_GOAL := help
 
-run-dev: ## Run locally using variables in the config-local file
-	echo "==================================="
-	echo "Setting local environment variables"
-	echo "==================================="
-	cat ./config-dev.env
-	source ./config-dev.env
-	NATS_SERVER=$(NATS_SERVER) NATS_SUBJECT=$(NATS_SUBJECT) python3 main.py
+dev: ## Run locally using variables in the config-local file
+	echo "Doing the thing"
 
-git-submodule-update: ## Update all the submodules for this project
-	git submodule update --init --recursive
-	git submodule update --recursive --remote
+install: ## Install the service
+	sudo cp ./service.tmpl /etc/systemd/system/enviroplus.service
+	sudo systemctl enable enviroplus.service
+	sudo systemctl start enviroplus.service
