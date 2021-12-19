@@ -36,7 +36,7 @@ except ImportError:
     from smbus import SMBus
 
 
-DEFAULT_MQTT_BROKER_IP = "192.168.20.10"
+DEFAULT_MQTT_BROKER_IP = "192.168.30.62"
 DEFAULT_MQTT_BROKER_PORT = 1883
 DEFAULT_MQTT_TOPIC = "mqtt.environment.metrics"
 DEFAULT_READ_INTERVAL = 5
