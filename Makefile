@@ -19,6 +19,6 @@ dev: ## Run locally using variables in the config-local file
 	echo "Doing the thing"
 
 install: ## Install the service
-	cp ./service.tmpl /etc/systemd/system/enviroplus.service
+	sudo cp ./service.tmpl /etc/systemd/system/enviroplus.service
 	sudo systemctl enable enviroplus.service
 	sudo systemctl start enviroplus.service
