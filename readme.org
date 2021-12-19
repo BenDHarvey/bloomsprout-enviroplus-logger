@@ -1,1 +1,9 @@
 * Enviro hat logger
+
+This repo has been simplified somewhat from its original form. It is directly using python script and pushing the results from the envioo+ hat sensors to mqtt broker. Ansible is being used to setup the service on the device.
+
+There are some manual steps required to setup a new device ready to run the python scripts.
+
+Scripts for setting up a new device can be found in github https://github.com/pimoroni/enviroplus-python . The single line command is also below
+
+`curl -sSL https://get.pimoroni.com/enviroplus | bash`
