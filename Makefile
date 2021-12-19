@@ -1,7 +1,4 @@
 # import config.
-cnf-dev ?= config-dev.env
-include $(cnf-dev)
-
 GIT_SHORT_SHA=$(shell git rev-parse --short HEAD)
 GIT_BRANCH=$(shell git rev-parse --symbolic-full-name --abbrev-ref HEAD)
 VERSION=$(GIT_BRANCH)_$(GIT_SHORT_SHA)
