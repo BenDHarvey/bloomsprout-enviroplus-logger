@@ -145,6 +145,19 @@ def display_status(disp, mqtt_broker):
     draw.text((x, y), message, font=font, fill=text_colour)
     disp.display(img)
 
+def wrapData(incomingData):
+    '''
+    wrap the data that we get from the sensors in a larger object that has some more meta data for the broker and consumer
+    '''
+
+    return {
+        "data": incomingData,
+        "timestamp": time.time(),
+        "meta": {
+            "device": "enviroplus"
+            }
+        }
+
 
 def main():
     parser = argparse.ArgumentParser(
@@ -263,7 +276,10 @@ def main():
                 values.update(pms_values)
             values["serial"] = device_serial_number
             print(values)
-            mqtt_client.publish(args.topic, json.dumps(values))
+
+            dataToLog = wrapData(values)
+
+            mqtt_client.publish(args.topic, json.dumps(dataToLog))
             display_status(disp, args.broker)
             time.sleep(args.interval)
         except Exception as e:
