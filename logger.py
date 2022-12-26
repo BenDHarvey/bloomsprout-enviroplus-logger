@@ -155,7 +155,7 @@ def wrapData(incomingData):
 
     return {
         "data": incomingData,
-        "timestamp": datetime.now()
+        "timestamp": datetime.now(),
         "meta": {
             "device": "enviroplus"
             }
