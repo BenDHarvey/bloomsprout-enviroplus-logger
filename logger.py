@@ -9,6 +9,7 @@ Example run: python3 mqtt-all.py --broker 192.168.1.164 --topic enviro --usernam
 import argparse
 import ST7735
 import time
+import datetime
 import ssl
 from bme280 import BME280
 from pms5003 import PMS5003, ReadTimeoutError, SerialTimeoutError
@@ -154,7 +155,7 @@ def wrapData(incomingData):
 
     return {
         "data": incomingData,
-        "timestamp": time.time(),
+        "timestamp": datetime.now()
         "meta": {
             "device": "enviroplus"
             }
