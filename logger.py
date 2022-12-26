@@ -282,7 +282,7 @@ def main():
 
             dataToLog = wrapData(values)
 
-            mqtt_client.publish(args.topic, json.dumps(dataToLog))
+            mqtt_client.publish(args.topic, json.dumps(dataToLog, indent=4, sort_keys=True, default=str))
             display_status(disp, args.broker)
             time.sleep(args.interval)
         except Exception as e:
