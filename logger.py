@@ -29,8 +29,8 @@ from PIL import Image, ImageDraw, ImageFont
 from fonts.ttf import RobotoMedium as UserFont
 import json
 
-import paho.mqtt.client as mqtt
-import paho.mqtt.publish as publish
+#import paho.mqtt.client as mqtt
+#import paho.mqtt.publish as publish
 
 try:
     from smbus2 import SMBus
@@ -47,16 +47,16 @@ DEFAULT_USERNAME = "admin"
 DEFAULT_PASSWORD = "admin123"
 
 
-# mqtt callbacks
-def on_connect(client, userdata, flags, rc):
-    if rc == 0:
-        print("connected OK")
-    else:
-        print("Bad connection Returned code=", rc)
-
-
-def on_publish(client, userdata, mid):
-    print("mid: " + str(mid))
+## mqtt callbacks
+#def on_connect(client, userdata, flags, rc):
+#    if rc == 0:
+#        print("connected OK")
+#    else:
+#        print("Bad connection Returned code=", rc)
+#
+#
+#def on_publish(client, userdata, mid):
+#    print("mid: " + str(mid))
 
 
 # Read values from BME280 and return as dict
@@ -164,83 +164,83 @@ def wrapData(incomingData):
 
 
 def main():
-    parser = argparse.ArgumentParser(
-        description="Publish enviroplus values over mqtt"
-    )
-    parser.add_argument(
-        "--broker",
-        default=DEFAULT_MQTT_BROKER_IP,
-        type=str,
-        help="mqtt broker IP",
-    )
-    parser.add_argument(
-        "--port",
-        default=DEFAULT_MQTT_BROKER_PORT,
-        type=int,
-        help="mqtt broker port",
-    )
-    parser.add_argument(
-        "--topic", default=DEFAULT_MQTT_TOPIC, type=str, help="mqtt topic"
-    )
-    parser.add_argument(
-        "--interval",
-        default=DEFAULT_READ_INTERVAL,
-        type=int,
-        help="the read interval in seconds",
-    )
-    parser.add_argument(
-        "--tls",
-        default=DEFAULT_TLS_MODE,
-        action='store_true',
-        help="enable TLS"
-    )
-    parser.add_argument(
-        "--username",
-        default=DEFAULT_USERNAME,
-        type=str,
-        help="mqtt username"
-    )
-    parser.add_argument(
-        "--password",
-        default=DEFAULT_PASSWORD,
-        type=str,
-        help="mqtt password"
-    )
-    args = parser.parse_args()
+#    parser = argparse.ArgumentParser(
+#        description="Publish enviroplus values over mqtt"
+#    )
+#    parser.add_argument(
+#        "--broker",
+#        default=DEFAULT_MQTT_BROKER_IP,
+#        type=str,
+#        help="mqtt broker IP",
+#    )
+#    parser.add_argument(
+#        "--port",
+#        default=DEFAULT_MQTT_BROKER_PORT,
+#        type=int,
+#        help="mqtt broker port",
+#    )
+#    parser.add_argument(
+#        "--topic", default=DEFAULT_MQTT_TOPIC, type=str, help="mqtt topic"
+#    )
+#    parser.add_argument(
+#        "--interval",
+#        default=DEFAULT_READ_INTERVAL,
+#        type=int,
+#        help="the read interval in seconds",
+#    )
+#    parser.add_argument(
+#        "--tls",
+#        default=DEFAULT_TLS_MODE,
+#        action='store_true',
+#        help="enable TLS"
+#    )
+#    parser.add_argument(
+#        "--username",
+#        default=DEFAULT_USERNAME,
+#        type=str,
+#        help="mqtt username"
+#    )
+#    parser.add_argument(
+#        "--password",
+#        default=DEFAULT_PASSWORD,
+#        type=str,
+#        help="mqtt password"
+#    )
+#    args = parser.parse_args()
 
     # Raspberry Pi ID
     device_serial_number = get_serial_number()
     device_id = "raspi-" + device_serial_number
 
-    print(
-        f"""mqtt-all.py - Reads Enviro plus data and sends over mqtt.
+#    print(
+#        f"""mqtt-all.py - Reads Enviro plus data and sends over mqtt.
+#
+#    broker: {args.broker}
+#    client_id: {device_id}
+#    port: {args.port}
+#    topic: {args.topic}
+#    tls: {args.tls}
+#    username: {args.username}
+#    password: {args.password}
+#
+#    Press Ctrl+C to exit!
+#
+#    """
+#    )
 
-    broker: {args.broker}
-    client_id: {device_id}
-    port: {args.port}
-    topic: {args.topic}
-    tls: {args.tls}
-    username: {args.username}
-    password: {args.password}
-
-    Press Ctrl+C to exit!
-
-    """
-    )
-
-    mqtt_client = mqtt.Client(client_id=device_id)
-    if args.username and args.password:
-        mqtt_client.username_pw_set(args.username, args.password)
-    mqtt_client.on_connect = on_connect
-    mqtt_client.on_publish = on_publish
-
-    if args.tls is True:
-        mqtt_client.tls_set(tls_version=ssl.PROTOCOL_TLSv1_2)
-
-    if args.username is not None:
-        mqtt_client.username_pw_set(args.username, password=args.password)
-
-    mqtt_client.connect(args.broker, port=args.port)
+#    mqtt_client = mqtt.Client(client_id=device_id)
+#    if args.username and args.password:
+#        mqtt_client.username_pw_set(args.username, args.password)
+#    mqtt_client.on_connect = on_connect
+#    mqtt_client.on_publish = on_publish
+#
+#    if args.tls is True:
+#        mqtt_client.tls_set(tls_version=ssl.PROTOCOL_TLSv1_2)
+#
+#    if args.username is not None:
+#        mqtt_client.username_pw_set(args.username, password=args.password)
+#
+#    mqtt_client.connect(args.broker, port=args.port)
 
     bus = SMBus(1)
 
