@@ -164,9 +164,9 @@ def wrapData(incomingData):
 
 
 def main():
-#    parser = argparse.ArgumentParser(
-#        description="Publish enviroplus values over mqtt"
-#    )
+    parser = argparse.ArgumentParser(
+        description="The parser"
+    )
 #    parser.add_argument(
 #        "--broker",
 #        default=DEFAULT_MQTT_BROKER_IP,
