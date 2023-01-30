@@ -11,6 +11,7 @@ import ST7735
 import time
 import datetime
 import ssl
+import requests
 from bme280 import BME280
 from pms5003 import PMS5003, ReadTimeoutError, SerialTimeoutError
 from enviroplus import gas
@@ -282,7 +283,13 @@ def main():
 
             dataToLog = wrapData(values)
 
-            mqtt_client.publish(args.topic, json.dumps(dataToLog, indent=4, sort_keys=True, default=str))
+#            mqtt_client.publish(args.topic, json.dumps(dataToLog, indent=4, sort_keys=True, default=str))
+            endpoints_list = ['http://local-metrics.waynard.internal', 'http://dev-metrics.waynard.internal', 'http://prod-metrics.waynard.internal']
+
+            for e in endpoints_list:
+                res = requests.post(e, json = dataToLog)
+                print(res)
+
             display_status(disp, args.broker)
             time.sleep(args.interval)
         except Exception as e:
