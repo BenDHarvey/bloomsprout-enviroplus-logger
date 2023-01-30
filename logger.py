@@ -268,7 +268,7 @@ def main():
     # Display Raspberry Pi serial and Wi-Fi status
     print("RPi serial: {}".format(device_serial_number))
     print("Wi-Fi: {}\n".format("connected" if check_wifi() else "disconnected"))
-    print("MQTT broker IP: {}".format(args.broker))
+#    print("MQTT broker IP: {}".format(args.broker))
 
     # Main loop to read data, display, and send over mqtt
 #    mqtt_client.loop_start()
