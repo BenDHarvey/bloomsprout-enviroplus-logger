@@ -182,12 +182,12 @@ def main():
 #    parser.add_argument(
 #        "--topic", default=DEFAULT_MQTT_TOPIC, type=str, help="mqtt topic"
 #    )
-#    parser.add_argument(
-#        "--interval",
-#        default=DEFAULT_READ_INTERVAL,
-#        type=int,
-#        help="the read interval in seconds",
-#    )
+    parser.add_argument(
+        "--interval",
+        default=DEFAULT_READ_INTERVAL,
+        type=int,
+        help="the read interval in seconds",
+    )
 #    parser.add_argument(
 #        "--tls",
 #        default=DEFAULT_TLS_MODE,
@@ -206,7 +206,7 @@ def main():
 #        type=str,
 #        help="mqtt password"
 #    )
-#    args = parser.parse_args()
+    args = parser.parse_args()
 
     # Raspberry Pi ID
     device_serial_number = get_serial_number()
@@ -271,7 +271,7 @@ def main():
     print("MQTT broker IP: {}".format(args.broker))
 
     # Main loop to read data, display, and send over mqtt
-    mqtt_client.loop_start()
+#    mqtt_client.loop_start()
     while True:
         try:
             values = read_bme280(bme280)
