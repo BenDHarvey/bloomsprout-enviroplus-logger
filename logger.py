@@ -284,7 +284,7 @@ def main():
             dataToLog = wrapData(values)
 
 #            mqtt_client.publish(args.topic, json.dumps(dataToLog, indent=4, sort_keys=True, default=str))
-            endpoints_list = ['http://local-metrics.waynard.internal:8085/ingest']
+            endpoints_list = ['http://local-metrics.waynard.internal:8085/ingest', 'http://prod-metrics.waynard.internal:8085/ingest']
 
             for e in endpoints_list:
                 res = requests.post(e, json = dataToLog)
