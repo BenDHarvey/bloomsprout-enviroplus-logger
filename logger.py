@@ -143,16 +143,6 @@ def wrapData(incomingData):
 async def main():
     nats_server = 'nats://192.168.30.60:4222'
     nc = await nats.connect(nats_server)
-    parser = argparse.ArgumentParser(
-        description="The parser"
-    )
-    parser.add_argument(
-        "--interval",
-        default=DEFAULT_READ_INTERVAL,
-        type=int,
-        help="the read interval in seconds",
-    )
-    args = parser.parse_args()
 
     # Raspberry Pi ID
     device_serial_number = get_serial_number()
