@@ -15,6 +15,7 @@ import requests
 from bme280 import BME280
 from pms5003 import PMS5003, ReadTimeoutError, SerialTimeoutError
 from enviroplus import gas
+from nats import NATSClient
 
 try:
     # Transitional fix for breaking change in LTR559
@@ -29,35 +30,16 @@ from PIL import Image, ImageDraw, ImageFont
 from fonts.ttf import RobotoMedium as UserFont
 import json
 
-#import paho.mqtt.client as mqtt
-#import paho.mqtt.publish as publish
-
 try:
     from smbus2 import SMBus
 except ImportError:
     from smbus import SMBus
 
-
-DEFAULT_MQTT_BROKER_IP = "rabbitmq.waynard.internal"
-DEFAULT_MQTT_BROKER_PORT = 1883
-DEFAULT_MQTT_TOPIC = "mqtt.environment.metrics"
-DEFAULT_READ_INTERVAL = 5
-DEFAULT_TLS_MODE = False
-DEFAULT_USERNAME = "admin"
-DEFAULT_PASSWORD = "admin123"
-
-
-## mqtt callbacks
-#def on_connect(client, userdata, flags, rc):
-#    if rc == 0:
-#        print("connected OK")
-#    else:
-#        print("Bad connection Returned code=", rc)
-#
-#
-#def on_publish(client, userdata, mid):
-#    print("mid: " + str(mid))
-
+def send_message_sync(payload, server_address):
+    with NATSClient() as nc:
+        nc.connect(server_address)
+        nc.publish("enviro_metrics", payload.encode())
+        nc.flush()
 
 # Read values from BME280 and return as dict
 def read_bme280(bme280):
@@ -167,80 +149,17 @@ def main():
     parser = argparse.ArgumentParser(
         description="The parser"
     )
-#    parser.add_argument(
-#        "--broker",
-#        default=DEFAULT_MQTT_BROKER_IP,
-#        type=str,
-#        help="mqtt broker IP",
-#    )
-#    parser.add_argument(
-#        "--port",
-#        default=DEFAULT_MQTT_BROKER_PORT,
-#        type=int,
-#        help="mqtt broker port",
-#    )
-#    parser.add_argument(
-#        "--topic", default=DEFAULT_MQTT_TOPIC, type=str, help="mqtt topic"
-#    )
     parser.add_argument(
         "--interval",
         default=DEFAULT_READ_INTERVAL,
         type=int,
         help="the read interval in seconds",
     )
-#    parser.add_argument(
-#        "--tls",
-#        default=DEFAULT_TLS_MODE,
-#        action='store_true',
-#        help="enable TLS"
-#    )
-#    parser.add_argument(
-#        "--username",
-#        default=DEFAULT_USERNAME,
-#        type=str,
-#        help="mqtt username"
-#    )
-#    parser.add_argument(
-#        "--password",
-#        default=DEFAULT_PASSWORD,
-#        type=str,
-#        help="mqtt password"
-#    )
     args = parser.parse_args()
 
     # Raspberry Pi ID
     device_serial_number = get_serial_number()
     device_id = "raspi-" + device_serial_number
-
-#    print(
-#        f"""mqtt-all.py - Reads Enviro plus data and sends over mqtt.
-#
-#    broker: {args.broker}
-#    client_id: {device_id}
-#    port: {args.port}
-#    topic: {args.topic}
-#    tls: {args.tls}
-#    username: {args.username}
-#    password: {args.password}
-#
-#    Press Ctrl+C to exit!
-#
-#    """
-#    )
-
-#    mqtt_client = mqtt.Client(client_id=device_id)
-#    if args.username and args.password:
-#        mqtt_client.username_pw_set(args.username, args.password)
-#    mqtt_client.on_connect = on_connect
-#    mqtt_client.on_publish = on_publish
-#
-#    if args.tls is True:
-#        mqtt_client.tls_set(tls_version=ssl.PROTOCOL_TLSv1_2)
-#
-#    if args.username is not None:
-#        mqtt_client.username_pw_set(args.username, password=args.password)
-#
-#    mqtt_client.connect(args.broker, port=args.port)
 
     bus = SMBus(1)
 
@@ -268,10 +187,7 @@ def main():
     # Display Raspberry Pi serial and Wi-Fi status
     print("RPi serial: {}".format(device_serial_number))
     print("Wi-Fi: {}\n".format("connected" if check_wifi() else "disconnected"))
-#    print("MQTT broker IP: {}".format(args.broker))
 
-    # Main loop to read data, display, and send over mqtt
-#    mqtt_client.loop_start()
     while True:
         try:
             values = read_bme280(bme280)
@@ -282,13 +198,9 @@ def main():
             print(values)
 
             dataToLog = wrapData(values)
+            nats_server = 'nats://192.168.30.60:4222'
 
-#            mqtt_client.publish(args.topic, json.dumps(dataToLog, indent=4, sort_keys=True, default=str))
-            endpoints_list = ['http://local-metrics.waynard.internal:8085/ingest', 'http://prod-metrics.waynard.internal:8085/ingest']
-
-            for e in endpoints_list:
-                res = requests.post(e, json = dataToLog)
-                print(res)
+            send_message_sync(dataToLog, nats_server)
 
             display_status(disp, args.broker)
             time.sleep(args.interval)
