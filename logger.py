@@ -15,7 +15,8 @@ import requests
 from bme280 import BME280
 from pms5003 import PMS5003, ReadTimeoutError, SerialTimeoutError
 from enviroplus import gas
-from nats import NATSClient
+import nats
+import asyncio
 
 try:
     # Transitional fix for breaking change in LTR559
@@ -34,12 +35,6 @@ try:
     from smbus2 import SMBus
 except ImportError:
     from smbus import SMBus
-
-def send_message_sync(payload, server_address):
-    with NATSClient() as nc:
-        nc.connect(server_address)
-        nc.publish("enviro_metrics", payload.encode())
-        nc.flush()
 
 # Read values from BME280 and return as dict
 def read_bme280(bme280):
@@ -145,7 +140,9 @@ def wrapData(incomingData):
         }
 
 
-def main():
+async def main():
+    nats_server = 'nats://192.168.30.60:4222'
+    nc = await nats.connect(nats_server)
     parser = argparse.ArgumentParser(
         description="The parser"
     )
@@ -198,9 +195,9 @@ def main():
             print(values)
 
             dataToLog = wrapData(values)
-            nats_server = 'nats://192.168.30.60:4222'
 
-            send_message_sync(dataToLog, nats_server)
+            await nc.publish("enviro_metrics", dataToLog)
+            await nc.flush()
 
             display_status(disp, args.broker)
             time.sleep(args.interval)
