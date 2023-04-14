@@ -102,7 +102,7 @@ def check_wifi():
 
 
 # Display Raspberry Pi serial and Wi-Fi status on LCD
-def display_status(disp, mqtt_broker):
+def display_status(disp, nats_server):
     # Width and height to calculate text position
     WIDTH = disp.width
     HEIGHT = disp.height
@@ -114,8 +114,8 @@ def display_status(disp, mqtt_broker):
     text_colour = (255, 255, 255)
     back_colour = (0, 170, 170) if check_wifi() else (85, 15, 15)
     device_serial_number = get_serial_number()
-    message = "{}\nWi-Fi: {}\nmqtt-broker: {}".format(
-        device_serial_number, wifi_status, mqtt_broker
+    message = "{}\nWi-Fi: {}\nnats-server: {}".format(
+        device_serial_number, wifi_status, nats_server
     )
     img = Image.new("RGB", (WIDTH, HEIGHT), color=(0, 0, 0))
     draw = ImageDraw.Draw(img)
@@ -191,8 +191,8 @@ async def main():
             await nc.publish("enviro_metrics", as_bytes)
             await nc.flush()
 
-            display_status(disp, args.broker)
-            time.sleep(args.interval)
+            display_status(disp, nats_server)
+            time.sleep(5000)
         except Exception as e:
             print(e)
             continue
