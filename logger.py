@@ -185,8 +185,10 @@ async def main():
             print(values)
 
             dataToLog = wrapData(values)
+            as_json_string = json.dumps(dataToLog)
+            as_bytes = str.encode(as_json_string)
 
-            await nc.publish("enviro_metrics", dataToLog)
+            await nc.publish("enviro_metrics", as_bytes)
             await nc.flush()
 
             display_status(disp, args.broker)
