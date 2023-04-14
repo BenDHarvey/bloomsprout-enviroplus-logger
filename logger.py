@@ -193,6 +193,7 @@ async def main():
             time.sleep(args.interval)
         except Exception as e:
             print(e)
+            continue
 
 
 if __name__ == "__main__":
