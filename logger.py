@@ -192,7 +192,7 @@ async def main():
             await nc.flush()
 
             display_status(disp, nats_server)
-            time.sleep(5000)
+            time.sleep(5)
         except Exception as e:
             print(e)
             continue
